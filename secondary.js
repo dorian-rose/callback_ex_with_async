@@ -15,7 +15,6 @@ const arrayBeca = [
   { id: 5, beca: false },
 ];
 const id = 2;
-
 const getAlumnos = async (id) => {
   let alumno = arrayAlumnos.find((item) => item.id == id)?.nombre;
   if (alumno) {
@@ -40,23 +39,30 @@ const getBecas = async (id, nombre, nota) => {
   if (beca != undefined) {
     return beca;
   } else {
-    throw ` ${nombre} tiene nota de ${nota} y no ha solicitado beca`;
+    throw ` ${nombre} tiene nota de ${nota} pero no ha solicitado beca`;
   }
 };
 
 const getDatos = async (id) => {
+  let message;
   try {
     const nombre = await getAlumnos(id);
     const nota = await getNotas(id, nombre);
     const beca = await getBecas(id, nombre, nota);
     if (beca == true) {
-      console.log(`${nombre} tiene nota de ${nota} y recibe beca`);
+      message = `${nombre} tiene nota de ${nota} y recibe beca`;
     } else {
-      console.log(`${nombre} tiene nota de ${nota} pero NO recibe beca`);
+      message = `${nombre} tiene nota de ${nota} y solicitó beca, pero NO la recibe`;
     }
   } catch (error) {
-    console.log(error);
+    message = error;
   }
+  return message;
 };
 
-getDatos(id);
+const print = async (id) => {
+  message = await getDatos(id);
+  document.write(message);
+};
+
+print(id);
